@@ -14,9 +14,8 @@
   "dependencies": {
     "@primeuix/themes": "^1.0.0",
     "primevue": "^4.3.2",
-    "vee-validate": "^4.15.0",
-    "vue": "^3.4.37",
-    "yup": "^1.6.1"
+    "uuid": "^11.1.0",
+    "vue": "^3.4.37"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
