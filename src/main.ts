@@ -1,15 +1,20 @@
 // Plugins
-import { registerPlugins } from '@/plugins'
+import { registerPlugins } from '@/plugins';
+import { registerComponents } from '@/plugins/prime-components';
 
 // Components
-import App from './App.vue'
+import App from './App.vue';
 
 // Composables
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 
+// styles
+import '@/styles/style.css';
+import 'primeicons/primeicons.css';
 
-const app = createApp(App)
+const app = createApp(App);
 
-registerPlugins(app)
+registerPlugins(app);
+registerComponents(app);
 
-app.mount('#app')
+app.mount('#app');
