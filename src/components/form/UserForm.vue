@@ -1,99 +1,23 @@
 <script setup lang="ts">
-import type {
-  IUser,
-  IUserWithId,
-} from '@/interfaces/IUser';
-import { useUsersStore } from '@/stores/users';
-import {
-  userTypeLDAP,
-  userTypes,
-} from '@/utils/users';
+import type { IUserWithId } from '@/interfaces/IUser.ts';
 
-import { computed, reactive, ref } from 'vue';
+import { useUserForm } from '@/composables/useUserForm';
+import { userTypes } from '@/utils/users';
 
 interface IProps {
   user: IUserWithId;
 }
 
-type TErrors = {
-  [K in keyof IUser]: boolean;
-};
-
 const props = defineProps<IProps>();
 
-const usersStore = useUsersStore();
-
-const errors = ref<TErrors>({
-  label: false,
-  type: false,
-  login: false,
-  password: false,
-});
-
-const fields = reactive({
-  label: props.user.label,
-  type: props.user.type,
-  login: props.user.login,
-  password: props.user.password,
-});
-
-const isUserTypeLDAP = computed(
-  () => fields.type === userTypeLDAP
-);
-
-const userUpdate = () => {
-  const isInvalid = Object.values(
-    errors.value
-  ).includes(true);
-
-  if (!isInvalid) {
-    usersStore.updateUser(props.user.id, fields);
-  }
-};
-
-const validateLabels = () => {
-  errors.value = {
-    label: false,
-    type: false,
-    login: false,
-    password: false,
-  };
-
-  if (!fields.type) {
-    errors.value.type = true;
-  }
-
-  if (!fields.login) {
-    errors.value.login = true;
-  }
-
-  if (!isUserTypeLDAP.value && !fields.password) {
-    errors.value.password = true;
-  }
-
-  userUpdate();
-};
-
-const updateUserType = () => {
-  if (isUserTypeLDAP.value) {
-    fields.password = null;
-    errors.value.password = false;
-  }
-
-  validateLabels();
-};
-
-const handleInputEventBlur = () => {
-  validateLabels();
-};
-
-const handleSelectEventChange = () => {
-  updateUserType();
-};
-
-const handleDeleteButtonEventClick = () => {
-  usersStore.deleteUserById(props.user.id);
-};
+const {
+  fields,
+  errors,
+  isUserTypeLDAP,
+  handleInputEventBlur,
+  handleSelectEventChange,
+  handleDeleteButtonEventClick,
+} = useUserForm(props.user);
 </script>
 
 <template>
